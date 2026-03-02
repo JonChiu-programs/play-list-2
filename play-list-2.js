@@ -5,6 +5,8 @@
 import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
+import "./play-list-button.js";
+import "./play-list-indicator.js";
 
 /**
  * `play-list-2`
@@ -21,17 +23,10 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
   constructor() {
     super();
     this.title = "";
-    this.t = this.t || {};
+    this.currentIndex = 0;
     this.t = {
-      ...this.t,
       title: "Title",
     };
-    this.registerLocalization({
-      context: this,
-      localesPath:
-        new URL("./locales/play-list-2.ar.json", import.meta.url).href +
-        "/../",
-    });
   }
 
   // Lit reactive properties
@@ -39,6 +34,7 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
     return {
       ...super.properties,
       title: { type: String },
+      currentIndex: { type: Number },
     };
   }
 
@@ -55,9 +51,10 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
       .wrapper {
         margin: var(--ddd-spacing-2);
         padding: var(--ddd-spacing-4);
+        height: 1000px;
       }
       h3 span {
-        font-size: var(--play-list-2-label-font-size, var(--ddd-font-size-s));
+        font-size: var(--play-list-project-label-font-size, var(--ddd-font-size-s));
       }
     `];
   }
@@ -67,17 +64,68 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
     return html`
 <div class="wrapper">
   <h3><span>${this.t.title}:</span> ${this.title}</h3>
+
+  <!-- Inherits the customEvent tags from the playlist-arrow .js file in order to allow them to be defined with js 
+      code from this file -->
+  <play-list-button
+    @prev-clicked="${this.prev}"
+    @next-clicked="${this.next}">
+  </play-list-button>
+
+  <!-- Allows for placement of slides into project code -->
   <slot></slot>
+
+  <!-- Inherits the constructor tags from the playlist-indicator .js file in order to 
+      transfer information to the array and for loop -->
+  <!-- slides = dots ? -->
+  <play-list-indicator
+    @play-list-index-changed="${this.handleEvent}"
+    .total="${this.slides ? this.slides.length : 0}"
+    .currentIndex="${this.currentIndex}">
+  </play-list-indicator>
 </div>`;
   }
 
-  /**
-   * haxProperties integration via file reference
-   */
-  static get haxProperties() {
-    return new URL(`./lib/${this.tag}.haxProperties.json`, import.meta.url)
-      .href;
+next() {
+  if (this.currentIndex < this.slides.length - 1) {
+    this.currentIndex++;
+    this.updateSlides();
   }
+}
+
+
+prev() {
+  if (this.currentIndex > 0) {
+    this.currentIndex--;
+    this.updateSlides();
+  }
+}
+
+handleEvent(e){
+  this.currentIndex = e.detail.index;
+  this.updateSlides();
+}
+//Makes slides = dots
+firstUpdated() {
+  this.slides = Array.from(this.querySelectorAll("play-list-slide"));
+  this.updateSlides();
+}
+
+updateSlides() {
+  this.slides.forEach((slide, i) => {
+    slide.style.display = i === this.currentIndex ? "block" : "none";
+  });
+  const indexChange = new CustomEvent("play-list-index-changed", {
+  composed: true,
+  bubbles: true,
+  detail: {
+    index: this.currentIndex
+  },
+});
+this.dispatchEvent(indexChange);  
+
+}
+
 }
 
 globalThis.customElements.define(PlayList2.tag, PlayList2);
