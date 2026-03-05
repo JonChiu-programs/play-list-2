@@ -47,14 +47,29 @@ export class PlayListButton extends DDDSuper(I18NMixin(LitElement)) {
       button {
         background-color: var(--ddd-theme-default-beaverBlue);
         color: white;
-        border: none;
+        border: solid;
         padding: var(--ddd-spacing-2) var(--ddd-spacing-4);
         border-radius: var(--ddd-radius-sm);
         cursor: pointer;
-        font-size: var(--ddd-font-size-s);
+        font-size: 100px;
+        border-color: white;
+        border-width: 2px;
+      }
+
+      button.prev{
+        transform: translateX(-100px);
+      }
+
+      button.next{
+        transform: translateX(100px);
       }
       button:hover {
         opacity: 0.8;
+        background-color: green;
+      }
+
+      button:focus{
+        background-color: red;
       }
     `];
   }
@@ -63,8 +78,9 @@ export class PlayListButton extends DDDSuper(I18NMixin(LitElement)) {
   render() {
     return html`
     <div class="wrapper">
-        <button class="prev" @click=${() => this.dispatchEvent(new CustomEvent('prev-clicked', {bubbles: true, composed: true }))}>Previous</button>
-        <button class="next" @click=${() => this.dispatchEvent(new CustomEvent('next-clicked', {bubbles: true, composed: true}))}>Next</button>
+        <button class="prev" @click=${() => this.dispatchEvent(new CustomEvent('prev-clicked', {bubbles: true, composed: true }))}><=</button>
+        <slot></slot>
+        <button class="next" @click=${() => this.dispatchEvent(new CustomEvent('next-clicked', {bubbles: true, composed: true}))}>=></button>
     </div>
     `;
   }

@@ -20,8 +20,8 @@ export class PlayListIndicator extends DDDSuper(I18NMixin(LitElement)) {
 
   constructor() {
     super();
-        this.total = 0; // Tracks the size of the array that is made from the dots
-        this.currentIndex = 0; //Tracks the indicator dot that its active
+        this.total = 0;
+        this.currentIndex = 0;
   }
 
   static get properties() {
@@ -37,34 +37,57 @@ export class PlayListIndicator extends DDDSuper(I18NMixin(LitElement)) {
     css`
       :host {
         display: block;
+        position: fixed;
+        transform: translate(850px);
       }
       .dots {
-        transform: translateY(300px);
+        transform: translateY(420px);
         display: flex;
         justify-content: center;
+        visibility: visible;
         gap: var(--ddd-spacing-2);
         padding: var(--ddd-spacing-2);
+        cursor: pointer;
         }
+
     .dot {
-    width: 200px;
-    height: 200px;
+    visibility: visible;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background-color: var(--ddd-theme-default-beaverBlue);
-    opacity: 0.4;
-    cursor: pointer;
+    opacity: 0.7;
     }
+    
     .dot.active {
     opacity: 1;
+    background-color: red;
     }
         `];
   }
 
   render() {
-    let dots = []; // Array to allow for the duplication of indicator dots
-    for (let i = 0; i < this.total; i++) { //For loop that clones the indicator dots
+    let dots = [];
+    if(this.currentIndex == 0){
+        dots.push(html`
+      <span class="dot ${0 === this.currentIndex ? 'active' : ''}"></span>
+      `);
+      dots.push(html`
+      <span class="dot"></span>
+      `);
+      dots.push(html`
+      <span class="dot"></span>
+      `);
+      dots.push(html`
+      <span class="dot"></span>
+      `);
+    }
+    else{
+      for (let i = 0; i < this.total; i++) {
       dots.push(html`
       <span class="dot ${i === this.currentIndex ? 'active' : ''}" @click="${this.handleDotClick}" data-index="${i}"></span>
-        `);
+      `);
+    }
     }
     return html`
       <div class="dots">

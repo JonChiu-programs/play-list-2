@@ -22,18 +22,13 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
 
   constructor() {
     super();
-    this.title = "";
     this.currentIndex = 0;
-    this.t = {
-      title: "Title",
-    };
   }
 
   // Lit reactive properties
   static get properties() {
     return {
       ...super.properties,
-      title: { type: String },
       currentIndex: { type: Number },
     };
   }
@@ -43,19 +38,24 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
     return [super.styles,
     css`
       :host {
-        display: block;
+        display: inline-block;
         color: var(--ddd-theme-primary);
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-navigation);
+        height: 1000px;
+        width: 2000px;
+        transform: translateX(13vw);
+        align-content: center;
       }
       .wrapper {
         margin: var(--ddd-spacing-2);
         padding: var(--ddd-spacing-4);
-        height: 1000px;
       }
+
       h3 span {
         font-size: var(--play-list-project-label-font-size, var(--ddd-font-size-s));
       }
+
     `];
   }
 
@@ -63,36 +63,27 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
   render() {
     return html`
 <div class="wrapper">
-  <h3><span>${this.t.title}:</span> ${this.title}</h3>
 
-  <!-- Inherits the customEvent tags from the playlist-arrow .js file in order to allow them to be defined with js 
-      code from this file -->
   <play-list-button
     @prev-clicked="${this.prev}"
     @next-clicked="${this.next}">
+    <slot></slot>
   </play-list-button>
 
-  <!-- Allows for placement of slides into project code -->
-  <slot></slot>
-
-  <!-- Inherits the constructor tags from the playlist-indicator .js file in order to 
-      transfer information to the array and for loop -->
-  <!-- slides = dots ? -->
   <play-list-indicator
     @play-list-index-changed="${this.handleEvent}"
     .total="${this.slides ? this.slides.length : 0}"
     .currentIndex="${this.currentIndex}">
   </play-list-indicator>
-</div>`;
+  </div>`;
   }
 
 next() {
   if (this.currentIndex < this.slides.length - 1) {
-    this.currentIndex++;
-    this.updateSlides();
+      this.currentIndex++;
+      this.updateSlides();
   }
 }
-
 
 prev() {
   if (this.currentIndex > 0) {
@@ -105,7 +96,7 @@ handleEvent(e){
   this.currentIndex = e.detail.index;
   this.updateSlides();
 }
-//Makes slides = dots
+
 firstUpdated() {
   this.slides = Array.from(this.querySelectorAll("play-list-slide"));
   this.updateSlides();
@@ -113,7 +104,7 @@ firstUpdated() {
 
 updateSlides() {
   this.slides.forEach((slide, i) => {
-    slide.style.display = i === this.currentIndex ? "block" : "none";
+      slide.style.display = i === this.currentIndex ? "block" : "none";
   });
   const indexChange = new CustomEvent("play-list-index-changed", {
   composed: true,
