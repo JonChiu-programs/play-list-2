@@ -71,6 +71,21 @@ export class PlayListButton extends DDDSuper(I18NMixin(LitElement)) {
       button:focus{
         background-color: red;
       }
+      @media (min-width: 500px) and (max-width: 800px){
+        button{
+          height: 75%;
+          width: 75%;
+          font-size: 75%;
+        }
+        button.prev{
+        transform: translateX(-75px);
+      }
+
+      button.next{
+        margin-left: 55px;
+        transform: translateX(100px);
+      }
+      }
     `];
   }
 

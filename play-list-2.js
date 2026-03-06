@@ -55,7 +55,13 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
       h3 span {
         font-size: var(--play-list-project-label-font-size, var(--ddd-font-size-s));
       }
-
+        
+      @media (min-width: 500px) and (max-width: 800px){
+        play-list-indicator{
+          transform: translateX(-100px);
+        }
+      }
+    
     `];
   }
 
