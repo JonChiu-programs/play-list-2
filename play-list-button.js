@@ -93,9 +93,9 @@ export class PlayListButton extends DDDSuper(I18NMixin(LitElement)) {
   render() {
     return html`
     <div class="wrapper">
-        <button class="prev" @click=${() => this.dispatchEvent(new CustomEvent('prev-clicked', {bubbles: true, composed: true }))}><=</button>
+        <button class="prev" @click=${() => this.dispatchEvent(new CustomEvent('previous', {bubbles: true, composed: true }))}><=</button>
         <slot></slot>
-        <button class="next" @click=${() => this.dispatchEvent(new CustomEvent('next-clicked', {bubbles: true, composed: true}))}>=></button>
+        <button class="next" @click=${() => this.dispatchEvent(new CustomEvent('next', {bubbles: true, composed: true}))}>=></button>
     </div>
     `;
   }

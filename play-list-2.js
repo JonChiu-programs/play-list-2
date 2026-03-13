@@ -71,8 +71,8 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
 <div class="wrapper">
 
   <play-list-button
-    @prev-clicked="${this.prev}"
-    @next-clicked="${this.next}">
+    @previous="${this.previous}"
+    @next="${this.next}">
     <slot></slot>
   </play-list-button>
 
@@ -91,7 +91,7 @@ next() {
   }
 }
 
-prev() {
+previous() {
   if (this.currentIndex > 0) {
     this.currentIndex--;
     this.updateSlides();
