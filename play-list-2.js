@@ -83,6 +83,9 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
   </play-list-indicator>
   </div>`;
   }
+
+  //Note: Some names are identical to Interested-Learner's due to modifications causing the code to break when they are changed significantly. I have yet to figure out the cause.
+
   firstUpdated() {
   this.slides = Array.from(this.querySelectorAll("play-list-slide"));
   this.updateSlides();
