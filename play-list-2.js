@@ -83,6 +83,25 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
   </play-list-indicator>
   </div>`;
   }
+  firstUpdated() {
+  this.slides = Array.from(this.querySelectorAll("play-list-slide"));
+  this.updateSlides();
+  }
+  
+  updateSlides() {
+  this.slides.forEach((slide, i) => {
+      slide.style.display = i === this.currentIndex ? "block" : "none";
+  });
+  const indexChange = new CustomEvent("play-list-index-changed", {
+  composed: true,
+  bubbles: true,
+  detail: {
+    index: this.currentIndex
+  },
+});
+this.dispatchEvent(indexChange);  
+
+}
 
 next() {
   if (this.currentIndex < this.slides.length - 1) {
@@ -101,26 +120,6 @@ previous() {
 handleEvent(e){
   this.currentIndex = e.detail.index;
   this.updateSlides();
-}
-
-firstUpdated() {
-  this.slides = Array.from(this.querySelectorAll("play-list-slide"));
-  this.updateSlides();
-}
-
-updateSlides() {
-  this.slides.forEach((slide, i) => {
-      slide.style.display = i === this.currentIndex ? "block" : "none";
-  });
-  const indexChange = new CustomEvent("play-list-index-changed", {
-  composed: true,
-  bubbles: true,
-  detail: {
-    index: this.currentIndex
-  },
-});
-this.dispatchEvent(indexChange);  
-
 }
 
 }
