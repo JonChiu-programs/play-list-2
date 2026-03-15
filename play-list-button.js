@@ -49,7 +49,7 @@ export class PlayListButton extends DDDSuper(I18NMixin(LitElement)) {
         color: white;
         border: solid;
         padding: var(--ddd-spacing-2) var(--ddd-spacing-4);
-        border-radius: var(--ddd-radius-sm);
+        border-radius: 100px;
         cursor: pointer;
         font-size: 100px;
         border-color: white;
