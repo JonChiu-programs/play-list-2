@@ -84,8 +84,6 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
   </div>`;
   }
 
-  //Personal note: firstUpdated cannot have its method name changed without breaking the code.
-  
   firstUpdated() {
   this.slides = Array.from(this.querySelectorAll("play-list-slide"));
   this.changeSlide();
