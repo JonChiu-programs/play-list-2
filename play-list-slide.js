@@ -33,7 +33,7 @@ export class PlayListSlide extends DDDSuper(I18NMixin(LitElement)) {
 
   render() {
     return html`
-      <div class="slide">
+      <div class="slides">
         <slot></slot>
       </div>`;
   }

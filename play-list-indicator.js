@@ -81,6 +81,9 @@ export class PlayListIndicator extends DDDSuper(I18NMixin(LitElement)) {
       dots.push(html`
       <span class="dot"></span>
       `);
+      dots.push(html`
+      <span class="dot"></span>
+      `);
     }
     else{
       for (let i = 0; i < this.total; i++) {
