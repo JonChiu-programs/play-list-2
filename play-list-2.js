@@ -84,14 +84,14 @@ export class PlayList2 extends DDDSuper(I18NMixin(LitElement)) {
   </div>`;
   }
 
-  //Note: Some names are identical to Interested-Learner's due to modifications causing the code to break when they are changed significantly. I have yet to figure out the cause.
-
+  //Personal note: firstUpdated cannot have its method name changed without breaking the code.
+  
   firstUpdated() {
   this.slides = Array.from(this.querySelectorAll("play-list-slide"));
-  this.updateSlides();
+  this.changeSlide();
   }
   
-  updateSlides() {
+  changeSlide() {
   this.slides.forEach((slide, i) => {
       slide.style.display = i === this.currentIndex ? "block" : "none";
   });
@@ -109,20 +109,20 @@ this.dispatchEvent(indexChange);
 next() {
   if (this.currentIndex < this.slides.length - 1) {
       this.currentIndex++;
-      this.updateSlides();
+      this.changeSlide();
   }
 }
 
 previous() {
   if (this.currentIndex > 0) {
     this.currentIndex--;
-    this.updateSlides();
+    this.changeSlide();
   }
 }
 
 handleEvent(e){
   this.currentIndex = e.detail.index;
-  this.updateSlides();
+  this.changeSlide();
 }
 
 }
